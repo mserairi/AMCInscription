@@ -1,0 +1,50 @@
+{
+  "name": "Inscription",
+  "fields": [
+    {
+      "fieldName": "dateinscription",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "EtatInscription",
+      "fieldValues": "ENREGISTREE,LISTE_ATTENTE,VALIDEE"
+    },
+    {
+      "fieldName": "remarques",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarif",
+      "fieldType": "Float"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "enfant",
+      "otherEntityRelationshipName": "inscription",
+      "relationshipValidateRules": "required",
+      "relationshipName": "inscrit",
+      "otherEntityField": "prenom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "formation",
+      "otherEntityRelationshipName": "inscription",
+      "relationshipValidateRules": "required",
+      "relationshipName": "formation",
+      "otherEntityField": "libille"
+    }
+  ],
+  "entityTableName": "inscription",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210613180811"
+}

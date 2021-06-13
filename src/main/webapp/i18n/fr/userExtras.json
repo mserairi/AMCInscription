@@ -1,0 +1,27 @@
+{
+  "amcInscriptionApp": {
+    "userExtras": {
+      "home": {
+        "title": "UserExtras",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau User Extras",
+        "createOrEditLabel": "Créer ou éditer un User Extras",
+        "notFound": "Aucun User Extras trouvé"
+      },
+      "created": "Un nouveau User Extras a été créé avec l'identifiant {{ param }}",
+      "updated": "Le User Extras avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le User Extras avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le User Extras {{ id }} ?"
+      },
+      "detail": {
+        "title": "User Extras"
+      },
+      "id": "ID",
+      "mob": "Mob",
+      "adresse": "Adresse",
+      "genre": "Genre",
+      "user": "User"
+    }
+  }
+}

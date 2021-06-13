@@ -12,6 +12,26 @@ import activate, { ActivateState } from 'app/modules/account/activate/activate.r
 import password, { PasswordState } from 'app/modules/account/password/password.reducer';
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
+// prettier-ignore
+import enfant, {
+  EnfantState
+} from 'app/entities/enfant/enfant.reducer';
+// prettier-ignore
+import category, {
+  CategoryState
+} from 'app/entities/category/category.reducer';
+// prettier-ignore
+import formation, {
+  FormationState
+} from 'app/entities/formation/formation.reducer';
+// prettier-ignore
+import inscription, {
+  InscriptionState
+} from 'app/entities/inscription/inscription.reducer';
+// prettier-ignore
+import userExtras, {
+  UserExtrasState
+} from 'app/entities/user-extras/user-extras.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -25,6 +45,11 @@ export interface IRootState {
   readonly passwordReset: PasswordResetState;
   readonly password: PasswordState;
   readonly settings: SettingsState;
+  readonly enfant: EnfantState;
+  readonly category: CategoryState;
+  readonly formation: FormationState;
+  readonly inscription: InscriptionState;
+  readonly userExtras: UserExtrasState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -40,6 +65,11 @@ const rootReducer = combineReducers<IRootState>({
   passwordReset,
   password,
   settings,
+  enfant,
+  category,
+  formation,
+  inscription,
+  userExtras,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

@@ -1,0 +1,84 @@
+{
+  "name": "Enfant",
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateNaissance",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "genre",
+      "fieldType": "TypeGenre",
+      "fieldValues": "MASCULIN,FEMININ",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nomParent2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenomParent2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobParent2",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^\\d{10,10}$"
+    },
+    {
+      "fieldName": "emailParent2",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^.+@.+$"
+    },
+    {
+      "fieldName": "infoSante",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "autorisationImage",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "nomContact",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobContact",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^\\d{10,10}$"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "enfant",
+      "relationshipValidateRules": "required",
+      "relationshipName": "parent",
+      "otherEntityField": "login"
+    }
+  ],
+  "entityTableName": "enfant",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210613180808"
+}

@@ -50,7 +50,6 @@ public class Enfant implements Serializable {
     @Column(name = "mob_parent_2")
     private String mobParent2;
 
-    @Pattern(regexp = "^.+@.+$")
     @Column(name = "email_parent_2")
     private String emailParent2;
 

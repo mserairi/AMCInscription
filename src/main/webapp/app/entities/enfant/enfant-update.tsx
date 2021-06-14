@@ -169,15 +169,7 @@ export const EnfantUpdate = (props: IEnfantUpdateProps) => {
                 <Label id="emailParent2Label" for="enfant-emailParent2">
                   <Translate contentKey="amcInscriptionApp.enfant.emailParent2">Email Parent 2</Translate>
                 </Label>
-                <AvField
-                  id="enfant-emailParent2"
-                  data-cy="emailParent2"
-                  type="text"
-                  name="emailParent2"
-                  validate={{
-                    pattern: { value: '^.+@.+$', errorMessage: translate('entity.validation.pattern', { pattern: '^.+@.+$' }) },
-                  }}
-                />
+                <AvField id="enfant-emailParent2" data-cy="emailParent2" type="text" name="emailParent2" />
               </AvGroup>
               <AvGroup>
                 <Label id="infoSanteLabel" for="enfant-infoSante">

@@ -8,7 +8,7 @@ entity Enfant {
     nomParent2 String
     prenomParent2 String
     mobParent2 String pattern(/^\d{10,10}$/)
-    emailParent2 String pattern(/^.+@.+$/)
+    emailParent2 String
     infoSante String
     autorisationImage Boolean
     nomContact String

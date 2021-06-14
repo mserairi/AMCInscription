@@ -38,9 +38,7 @@
     },
     {
       "fieldName": "emailParent2",
-      "fieldType": "String",
-      "fieldValidateRules": ["pattern"],
-      "fieldValidateRulesPattern": "^.+@.+$"
+      "fieldType": "String"
     },
     {
       "fieldName": "infoSante",

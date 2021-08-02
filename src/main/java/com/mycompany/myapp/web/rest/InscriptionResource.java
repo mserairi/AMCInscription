@@ -1,10 +1,14 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Formation;
 import com.mycompany.myapp.domain.Inscription;
+import com.mycompany.myapp.domain.enumeration.EtatInscription;
 import com.mycompany.myapp.repository.InscriptionRepository;
+import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +39,11 @@ public class InscriptionResource {
     private String applicationName;
 
     private final InscriptionRepository inscriptionRepository;
+    private UserService userService;
 
-    public InscriptionResource(InscriptionRepository inscriptionRepository) {
+    public InscriptionResource(InscriptionRepository inscriptionRepository, UserService userService) {
         this.inscriptionRepository = inscriptionRepository;
+        this.userService = userService;
     }
 
     /**
@@ -54,6 +60,15 @@ public class InscriptionResource {
             throw new BadRequestAlertException("A new inscription cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Inscription result = inscriptionRepository.save(inscription);
+        if (!this.userService.getUserWithAuthorities().get().getLogin().equals("admin")) {
+            EtatInscription E;
+            inscription.setDateinscription(LocalDate.now());
+            inscription.setTarif(inscription.getFormation().getTarif());
+            if (inscription.getFormation().getInstoLAT()) E = EtatInscription.LISTE_ATTENTE; else E = EtatInscription.ENREGISTREE;
+
+            inscription.setStatus(E);
+        }
+
         return ResponseEntity
             .created(new URI("/api/inscriptions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -158,7 +173,11 @@ public class InscriptionResource {
     @GetMapping("/inscriptions")
     public List<Inscription> getAllInscriptions() {
         log.debug("REST request to get all Inscriptions");
-        return inscriptionRepository.findAll();
+        if (
+            this.userService.getUserWithAuthorities().get().getLogin().equals("admin")
+        ) return inscriptionRepository.findAll(); else return inscriptionRepository.findByInscritParentLogin(
+            this.userService.getUserWithAuthorities().get().getLogin()
+        );
     }
 
     /**

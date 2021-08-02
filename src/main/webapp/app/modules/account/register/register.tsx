@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Row, Col, Alert, Button } from 'reactstrap';
-
+import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Row, Col, Alert, Button, Label } from 'reactstrap';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 import { IRootState } from 'app/shared/reducers';
 import { handleRegister, reset } from './register.reducer';
@@ -93,6 +92,37 @@ export const RegisterPage = (props: IRegisterProps) => {
               }}
               data-cy="secondPassword"
             />
+
+            <AvGroup>
+              <Label id="mobLabel" for="user-extras-mob">
+                <Translate contentKey="amcInscriptionApp.userExtras.mob">Mob</Translate>
+              </Label>
+              <AvField
+                id="user-extras-mob"
+                data-cy="mob"
+                type="text"
+                name="mob"
+                validate={{
+                  pattern: { value: '^\\d{10,10}$', errorMessage: translate('entity.validation.pattern', { pattern: '^\\d{10,10}$' }) },
+                }}
+              />
+            </AvGroup>
+            <AvGroup>
+              <Label id="adresseLabel" for="user-extras-adresse">
+                <Translate contentKey="amcInscriptionApp.userExtras.adresse">Adresse</Translate>
+              </Label>
+              <AvField id="user-extras-adresse" data-cy="adresse" type="text" name="adresse" />
+            </AvGroup>
+            <AvGroup>
+              <Label id="genreLabel" for="user-extras-genre">
+                <Translate contentKey="amcInscriptionApp.userExtras.genre">Genre</Translate>
+              </Label>
+              <AvInput id="user-extras-genre" data-cy="genre" type="select" className="form-control" name="genre" value={'MASCULIN'}>
+                <option value="MASCULIN">{translate('amcInscriptionApp.TypeGenre.MASCULIN')}</option>
+                <option value="FEMININ">{translate('amcInscriptionApp.TypeGenre.FEMININ')}</option>
+              </AvInput>
+            </AvGroup>
+
             <Button id="register-submit" color="primary" type="submit" data-cy="submit">
               <Translate contentKey="register.form.button">Register</Translate>
             </Button>

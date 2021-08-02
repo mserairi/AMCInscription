@@ -15,13 +15,15 @@ import { getEntity, updateEntity, createEntity, reset } from './inscription.redu
 import { IInscription } from 'app/shared/model/inscription.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
 export interface IInscriptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const InscriptionUpdate = (props: IInscriptionUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { inscriptionEntity, enfants, formations, loading, updating } = props;
+  const { inscriptionEntity, enfants, formations, loading, updating, isAdmin } = props;
 
   const handleClose = () => {
     props.history.push('/inscription');
@@ -76,7 +78,7 @@ export const InscriptionUpdate = (props: IInscriptionUpdateProps) => {
             <p>Loading...</p>
           ) : (
             <AvForm model={isNew ? {} : inscriptionEntity} onSubmit={saveEntity}>
-              {!isNew ? (
+              {isAdmin && !isNew ? (
                 <AvGroup>
                   <Label for="inscription-id">
                     <Translate contentKey="global.field.id">ID</Translate>
@@ -84,47 +86,46 @@ export const InscriptionUpdate = (props: IInscriptionUpdateProps) => {
                   <AvInput id="inscription-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
-              <AvGroup>
-                <Label id="dateinscriptionLabel" for="inscription-dateinscription">
-                  <Translate contentKey="amcInscriptionApp.inscription.dateinscription">Dateinscription</Translate>
-                </Label>
-                <AvField
-                  id="inscription-dateinscription"
-                  data-cy="dateinscription"
-                  type="date"
-                  className="form-control"
-                  name="dateinscription"
-                />
-              </AvGroup>
-              <AvGroup>
-                <Label id="statusLabel" for="inscription-status">
-                  <Translate contentKey="amcInscriptionApp.inscription.status">Status</Translate>
-                </Label>
-                <AvInput
-                  id="inscription-status"
-                  data-cy="status"
-                  type="select"
-                  className="form-control"
-                  name="status"
-                  value={(!isNew && inscriptionEntity.status) || 'ENREGISTREE'}
-                >
-                  <option value="ENREGISTREE">{translate('amcInscriptionApp.EtatInscription.ENREGISTREE')}</option>
-                  <option value="LISTE_ATTENTE">{translate('amcInscriptionApp.EtatInscription.LISTE_ATTENTE')}</option>
-                  <option value="VALIDEE">{translate('amcInscriptionApp.EtatInscription.VALIDEE')}</option>
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label id="remarquesLabel" for="inscription-remarques">
-                  <Translate contentKey="amcInscriptionApp.inscription.remarques">Remarques</Translate>
-                </Label>
-                <AvField id="inscription-remarques" data-cy="remarques" type="text" name="remarques" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="tarifLabel" for="inscription-tarif">
-                  <Translate contentKey="amcInscriptionApp.inscription.tarif">Tarif</Translate>
-                </Label>
-                <AvField id="inscription-tarif" data-cy="tarif" type="string" className="form-control" name="tarif" />
-              </AvGroup>
+              {isAdmin ? (
+                <>
+                  {' '}
+                  <AvGroup>
+                    <Label id="dateinscriptionLabel" for="inscription-dateinscription">
+                      <Translate contentKey="amcInscriptionApp.inscription.dateinscription">Dateinscription</Translate>
+                    </Label>
+                    <AvField
+                      id="inscription-dateinscription"
+                      data-cy="dateinscription"
+                      type="date"
+                      className="form-control"
+                      name="dateinscription"
+                    />
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="statusLabel" for="inscription-status">
+                      <Translate contentKey="amcInscriptionApp.inscription.status">Status</Translate>
+                    </Label>
+                    <AvInput
+                      id="inscription-status"
+                      data-cy="status"
+                      type="select"
+                      className="form-control"
+                      name="status"
+                      value={(!isNew && inscriptionEntity.status) || 'ENREGISTREE'}
+                    >
+                      <option value="ENREGISTREE">{translate('amcInscriptionApp.EtatInscription.ENREGISTREE')}</option>
+                      <option value="LISTE_ATTENTE">{translate('amcInscriptionApp.EtatInscription.LISTE_ATTENTE')}</option>
+                      <option value="VALIDEE">{translate('amcInscriptionApp.EtatInscription.VALIDEE')}</option>
+                    </AvInput>
+                  </AvGroup>
+                  <AvGroup>
+                    <Label id="tarifLabel" for="inscription-tarif">
+                      <Translate contentKey="amcInscriptionApp.inscription.tarif">Tarif</Translate>
+                    </Label>
+                    <AvField id="inscription-tarif" data-cy="tarif" type="string" className="form-control" name="tarif" />
+                  </AvGroup>
+                </>
+              ) : null}
               <AvGroup>
                 <Label for="inscription-inscrit">
                   <Translate contentKey="amcInscriptionApp.inscription.inscrit">Inscrit</Translate>
@@ -143,23 +144,68 @@ export const InscriptionUpdate = (props: IInscriptionUpdateProps) => {
                   <Translate contentKey="entity.validation.required">This field is required.</Translate>
                 </AvFeedback>
               </AvGroup>
+              {isAdmin ? (
+                <AvGroup>
+                  <Label for="inscription-formation">
+                    <Translate contentKey="amcInscriptionApp.inscription.formation">Formation</Translate>
+                  </Label>
+
+                  <AvInput
+                    id="inscription-formation"
+                    data-cy="formation"
+                    type="select"
+                    className="form-control"
+                    name="formationId"
+                    required
+                  >
+                    <option value="" key="0" />
+                    {formations
+                      ? formations.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libille}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                  </AvFeedback>
+                </AvGroup>
+              ) : (
+                <AvGroup>
+                  <Label for="inscription-formation">
+                    <Translate contentKey="amcInscriptionApp.inscription.formation">Formation</Translate>
+                  </Label>
+
+                  <AvInput
+                    id="inscription-formation"
+                    data-cy="formation"
+                    type="select"
+                    className="form-control"
+                    name="formationId"
+                    required
+                  >
+                    <option value="" key="0" />
+                    {formations
+                      ? formations
+                          .filter(otherEntity => otherEntity.insIsOpen)
+                          .map(otherEntity => (
+                            <option value={otherEntity.id} key={otherEntity.id}>
+                              {otherEntity.insIsOpen && otherEntity.libille}
+                            </option>
+                          ))
+                      : null}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                  </AvFeedback>
+                </AvGroup>
+              )}
               <AvGroup>
-                <Label for="inscription-formation">
-                  <Translate contentKey="amcInscriptionApp.inscription.formation">Formation</Translate>
+                <Label id="remarquesLabel" for="inscription-remarques">
+                  <Translate contentKey="amcInscriptionApp.inscription.remarques">Remarques</Translate>
                 </Label>
-                <AvInput id="inscription-formation" data-cy="formation" type="select" className="form-control" name="formationId" required>
-                  <option value="" key="0" />
-                  {formations
-                    ? formations.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libille}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-                <AvFeedback>
-                  <Translate contentKey="entity.validation.required">This field is required.</Translate>
-                </AvFeedback>
+                <AvField id="inscription-remarques" data-cy="remarques" type="text" name="remarques" />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/inscription" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -183,6 +229,7 @@ export const InscriptionUpdate = (props: IInscriptionUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
   enfants: storeState.enfant.entities,
   formations: storeState.formation.entities,
   inscriptionEntity: storeState.inscription.entity,

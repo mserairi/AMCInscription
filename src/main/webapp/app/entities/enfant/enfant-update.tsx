@@ -13,13 +13,15 @@ import { getEntity, updateEntity, createEntity, reset } from './enfant.reducer';
 import { IEnfant } from 'app/shared/model/enfant.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
 export interface IEnfantUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EnfantUpdate = (props: IEnfantUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { enfantEntity, users, loading, updating } = props;
+  const { enfantEntity, users, loading, updating, account, isAdmin } = props;
 
   const handleClose = () => {
     props.history.push('/enfant');
@@ -209,24 +211,47 @@ export const EnfantUpdate = (props: IEnfantUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              <AvGroup>
-                <Label for="enfant-parent">
-                  <Translate contentKey="amcInscriptionApp.enfant.parent">Parent</Translate>
-                </Label>
-                <AvInput id="enfant-parent" data-cy="parent" type="select" className="form-control" name="parentId" required>
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-                <AvFeedback>
-                  <Translate contentKey="entity.validation.required">This field is required.</Translate>
-                </AvFeedback>
-              </AvGroup>
+              {isAdmin ? (
+                <AvGroup>
+                  <Label for="enfant-parent">
+                    <Translate contentKey="amcInscriptionApp.enfant.parent">Parent</Translate>
+                  </Label>
+                  <AvInput id="enfant-parent" data-cy="parent" type="select" className="form-control" name="parentId" required>
+                    <option value="" key="0" />
+                    {users
+                      ? users.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.login}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                  </AvFeedback>
+                </AvGroup>
+              ) : (
+                <AvGroup>
+                  <Label for="enfant-parent">
+                    <Translate contentKey="amcInscriptionApp.enfant.parent">Parent</Translate>
+                  </Label>
+                  <AvInput id="enfant-parent" data-cy="parent" type="select" className="form-control" name="parentId" required>
+                    <option value="" key="0" />
+                    {users
+                      ? users
+                          .filter(otherEntity => otherEntity.login === account.login)
+                          .map(otherEntity => (
+                            <option value={otherEntity.id} key={otherEntity.id}>
+                              {otherEntity.login === account.login ? otherEntity.login : null}
+                            </option>
+                          ))
+                      : null}
+                  </AvInput>
+                  <AvFeedback>
+                    <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                  </AvFeedback>
+                </AvGroup>
+              )}
               <Button tag={Link} id="cancel-save" to="/enfant" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -249,7 +274,9 @@ export const EnfantUpdate = (props: IEnfantUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  account: storeState.authentication.account,
   users: storeState.userManagement.users,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
   enfantEntity: storeState.enfant.entity,
   loading: storeState.enfant.loading,
   updating: storeState.enfant.updating,

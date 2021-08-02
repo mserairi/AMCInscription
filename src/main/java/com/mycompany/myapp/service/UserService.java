@@ -3,7 +3,10 @@ package com.mycompany.myapp.service;
 import com.mycompany.myapp.config.Constants;
 import com.mycompany.myapp.domain.Authority;
 import com.mycompany.myapp.domain.User;
+import com.mycompany.myapp.domain.UserExtras;
+import com.mycompany.myapp.domain.enumeration.TypeGenre;
 import com.mycompany.myapp.repository.AuthorityRepository;
+import com.mycompany.myapp.repository.UserExtrasRepository;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.security.SecurityUtils;
@@ -34,6 +37,7 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final UserExtrasRepository userextrasRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -43,6 +47,7 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
+        UserExtrasRepository userextrasRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager
@@ -51,6 +56,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userextrasRepository = userextrasRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -99,7 +105,7 @@ public class UserService {
             );
     }
 
-    public User registerUser(AdminUserDTO userDTO, String password) {
+    public User registerUser(AdminUserDTO userDTO, String password, String mob, String adresse, TypeGenre genre) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -142,6 +148,16 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        // Create and save the UserExtra entity
+        UserExtras newUserExtra = new UserExtras();
+        newUserExtra.setUser(newUser);
+        newUserExtra.setMob(mob);
+        newUserExtra.setAdresse(adresse);
+        newUserExtra.setGenre(genre);
+        this.userextrasRepository.save(newUserExtra);
+        log.debug("Created Information for UserExtra: {}", newUserExtra);
+
         return newUser;
     }
 

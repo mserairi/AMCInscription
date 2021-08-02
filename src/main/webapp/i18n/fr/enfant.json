@@ -8,11 +8,11 @@
         "createOrEditLabel": "Créer ou éditer un Enfant",
         "notFound": "Aucun Enfant trouvé"
       },
-      "created": "Un nouveau Enfant a été créé avec l'identifiant {{ param }}",
+      "created": "Un nouveau Enfant a été ajouté avec l'identifiant {{ param }}",
       "updated": "Le Enfant avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Enfant avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Enfant {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer l'Enfant {{ id }} ?"
       },
       "detail": {
         "title": "Enfant"
@@ -22,14 +22,14 @@
       "prenom": "Prenom",
       "dateNaissance": "Date Naissance",
       "genre": "Genre",
-      "nomParent2": "Nom Parent 2",
-      "prenomParent2": "Prenom Parent 2",
-      "mobParent2": "Mob Parent 2",
-      "emailParent2": "Email Parent 2",
-      "infoSante": "Info Sante",
-      "autorisationImage": "Autorisation Image",
-      "nomContact": "Nom Contact",
-      "mobContact": "Mob Contact",
+      "nomParent2": "Nom du deuxième parent",
+      "prenomParent2": "Prenom du deuxième Parent",
+      "mobParent2": "Mobile du deuxième Parent",
+      "emailParent2": "E-mail du deuxième Parent",
+      "infoSante": "Informations sanitaires (allergies, asthme ou autre) ",
+      "autorisationImage": "J'autorise l'AMC à prendre mon enfant en photo",
+      "nomContact": "Nom de la personne à contacter en cas d'urgence",
+      "mobContact": "Mobile de la personne à contacter en cas d'urgence",
       "parent": "Parent"
     }
   }

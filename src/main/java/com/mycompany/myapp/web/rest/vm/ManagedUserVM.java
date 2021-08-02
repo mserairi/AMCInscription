@@ -1,6 +1,10 @@
 package com.mycompany.myapp.web.rest.vm;
 
+import com.mycompany.myapp.domain.enumeration.TypeGenre;
 import com.mycompany.myapp.service.dto.AdminUserDTO;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Size;
 
 /**
@@ -15,6 +19,10 @@ public class ManagedUserVM extends AdminUserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
+    private String mob;
+    private String adresse;
+    private TypeGenre genre;
+
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -25,6 +33,30 @@ public class ManagedUserVM extends AdminUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getMob() {
+        return mob;
+    }
+
+    public void setMob(String mob) {
+        this.mob = mob;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public TypeGenre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(TypeGenre genre) {
+        this.genre = genre;
     }
 
     // prettier-ignore

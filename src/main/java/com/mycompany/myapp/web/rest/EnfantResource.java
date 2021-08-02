@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Enfant;
 import com.mycompany.myapp.repository.EnfantRepository;
+import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,9 +36,11 @@ public class EnfantResource {
     private String applicationName;
 
     private final EnfantRepository enfantRepository;
+    private UserService userService;
 
-    public EnfantResource(EnfantRepository enfantRepository) {
+    public EnfantResource(EnfantRepository enfantRepository, UserService userService) {
         this.enfantRepository = enfantRepository;
+        this.userService = userService;
     }
 
     /**
@@ -54,6 +57,10 @@ public class EnfantResource {
             throw new BadRequestAlertException("A new enfant cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Enfant result = enfantRepository.save(enfant);
+        if (!this.userService.getUserWithAuthorities().get().getLogin().equals("admin")) enfant.setParent(
+            this.userService.getUserWithAuthorities().get()
+        );
+
         return ResponseEntity
             .created(new URI("/api/enfants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -182,7 +189,9 @@ public class EnfantResource {
     @GetMapping("/enfants")
     public List<Enfant> getAllEnfants() {
         log.debug("REST request to get all Enfants");
-        return enfantRepository.findAll();
+        if (
+            this.userService.getUserWithAuthorities().get().getLogin().equals("admin")
+        ) return enfantRepository.findAll(); else return enfantRepository.findByParentIsCurrentUser();
     }
 
     /**

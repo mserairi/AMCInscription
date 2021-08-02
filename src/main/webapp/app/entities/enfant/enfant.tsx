@@ -43,9 +43,11 @@ export const Enfant = (props: IEnfantProps) => {
           <Table responsive>
             <thead>
               <tr>
+                {/*
                 <th>
                   <Translate contentKey="amcInscriptionApp.enfant.id">ID</Translate>
                 </th>
+*/}
                 <th>
                   <Translate contentKey="amcInscriptionApp.enfant.nom">Nom</Translate>
                 </th>
@@ -55,6 +57,7 @@ export const Enfant = (props: IEnfantProps) => {
                 <th>
                   <Translate contentKey="amcInscriptionApp.enfant.dateNaissance">Date Naissance</Translate>
                 </th>
+                {/*
                 <th>
                   <Translate contentKey="amcInscriptionApp.enfant.genre">Genre</Translate>
                 </th>
@@ -85,22 +88,26 @@ export const Enfant = (props: IEnfantProps) => {
                 <th>
                   <Translate contentKey="amcInscriptionApp.enfant.parent">Parent</Translate>
                 </th>
+*/}
                 <th />
               </tr>
             </thead>
             <tbody>
               {enfantList.map((enfant, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
+                  {/*
                   <td>
                     <Button tag={Link} to={`${match.url}/${enfant.id}`} color="link" size="sm">
                       {enfant.id}
                     </Button>
                   </td>
+*/}
                   <td>{enfant.nom}</td>
                   <td>{enfant.prenom}</td>
                   <td>
                     {enfant.dateNaissance ? <TextFormat type="date" value={enfant.dateNaissance} format={APP_LOCAL_DATE_FORMAT} /> : null}
                   </td>
+                  {/*
                   <td>
                     <Translate contentKey={`amcInscriptionApp.TypeGenre.${enfant.genre}`} />
                   </td>
@@ -113,6 +120,7 @@ export const Enfant = (props: IEnfantProps) => {
                   <td>{enfant.nomContact}</td>
                   <td>{enfant.mobContact}</td>
                   <td>{enfant.parent ? enfant.parent.login : ''}</td>
+*/}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${enfant.id}`} color="info" size="sm" data-cy="entityDetailsButton">
@@ -121,12 +129,14 @@ export const Enfant = (props: IEnfantProps) => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
+
                       <Button tag={Link} to={`${match.url}/${enfant.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
                       </Button>
+
                       <Button tag={Link} to={`${match.url}/${enfant.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">

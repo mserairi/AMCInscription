@@ -4,28 +4,28 @@
       "home": {
         "title": "Formations",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Formation",
-        "createOrEditLabel": "Créer ou éditer un Formation",
-        "notFound": "Aucun Formation trouvé"
+        "createLabel": "Créer une nouvelle Formation",
+        "createOrEditLabel": "Créer ou éditer une Formation",
+        "notFound": "Aucune Formation trouvée"
       },
-      "created": "Un nouveau Formation a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Formation avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Formation avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Formation a été créée avec l'identifiant {{ param }}",
+      "updated": "La Formation avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Formation avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Formation {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Formation {{ id }} ?"
       },
       "detail": {
         "title": "Formation"
       },
       "id": "ID",
-      "libille": "Libille",
+      "libille": "Libillé",
       "description": "Description",
-      "ouvertureInscription": "Ouverture Inscription",
-      "fermetureInscription": "Fermeture Inscription",
+      "ouvertureInscription": "date d'ouverture des inscriptions",
+      "fermetureInscription": "date de fermeture des inscription",
       "seuilInscrits": "Seuil Inscrits",
       "tarif": "Tarif",
-      "instoLAT": "Insto LAT",
-      "insIsOpen": "Ins Is Open",
+      "instoLAT": "mettre une nouvelle inscription en liste d'attente ",
+      "insIsOpen": "les inscriptons sont ouvetes",
       "inscriptionOuverte": "Inscription Ouverte",
       "category": "Category"
     }
